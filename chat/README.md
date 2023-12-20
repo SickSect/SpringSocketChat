@@ -8,6 +8,11 @@ https://ru.stackoverflow.com/questions/508067/blockingqueue-%D0%BA%D0%BE%D0%B3%D
 
 https://java-online.ru/concurrent-queue-block.xhtml
 
+## CriteriaBuilder
+
+https://javarush.com/quests/lectures/questhibernate.level16.lecture00
+
+
 ## Annotatios
 
 https://www.youtube.com/watch?v=GCqQQeiyEQQ&list=PLrCZzMib1e9pnFbVV3u4s7ki5NTnm7WgT&index=5

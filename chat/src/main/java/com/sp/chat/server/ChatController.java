@@ -29,11 +29,7 @@ public class ChatController {
         return ResponseEntity.ok().body("You are logged in");
     }
 
-    /*@GetMapping("/view")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> view(){
-        String resp = String.join("\n", messages.stream().forEach(Queue::peek));
-    }*/
+
 
     @PostMapping("/say")
     @ResponseStatus(HttpStatus.OK)
