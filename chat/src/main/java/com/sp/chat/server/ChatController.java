@@ -29,8 +29,6 @@ public class ChatController {
         return ResponseEntity.ok().body("You are logged in");
     }
 
-
-
     @PostMapping("/say")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> say(@RequestParam("name")String name, @RequestParam("msg")String msg){
