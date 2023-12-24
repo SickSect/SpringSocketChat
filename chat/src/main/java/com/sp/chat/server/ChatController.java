@@ -1,6 +1,7 @@
 package com.sp.chat.server;
 
 import com.sp.chat.model.Message;
+import com.sp.chat.model.User;
 import com.sp.chat.service.ChatService;
 import com.sp.chat.utils.ChatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,7 @@ public class ChatController {
         ResponseEntity<String> response = utils.validateName(name, service.getOnlineUsers());
         if (response != null)
             return response;
-        //usersOnline.put(name, name);
-        //messages.add("User: " + name + " logged in!");
+        service.createAndSaveUser(name);
         return ResponseEntity.ok().body("You are logged in");
     }
 

@@ -3,6 +3,7 @@ package com.sp.chat.service;
 import com.sp.chat.dao.MessageDao;
 import com.sp.chat.dao.UserDao;
 import com.sp.chat.model.Message;
+import com.sp.chat.model.Status;
 import com.sp.chat.model.User;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
@@ -44,5 +45,12 @@ public class ChatService {
     public ResponseEntity messages(){
         List<Message> list= messageDao.getAllMessageByDate();
         return ResponseEntity.ok().body(list);
+    }
+
+    public void createAndSaveUser(String name) {
+        User user = new User();
+        user.setLogin(name);
+        user.setStatus(Status.ONLINE);
+        userDao.save(user);
     }
 }
