@@ -7,11 +7,13 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao{
     @PersistenceContext
     private EntityManager em;
@@ -44,6 +46,11 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public List<User> findAll() {
-        return em.createQuery("Select t from" + User.class.getSimpleName() + " t").getResultList();
+        return em.createQuery("Select t from " + User.class.getSimpleName() + " t").getResultList();
+    }
+
+    @Override
+    public List<User> findAllOnline(){
+        return em.createQuery("select t from " + User.class.getSimpleName() + " t where status=\'ONLINE\'").getResultList();
     }
 }

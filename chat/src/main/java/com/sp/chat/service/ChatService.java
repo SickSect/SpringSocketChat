@@ -2,11 +2,13 @@ package com.sp.chat.service;
 
 import com.sp.chat.dao.MessageDao;
 import com.sp.chat.dao.UserDao;
+import com.sp.chat.model.Message;
 import com.sp.chat.model.User;
 import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +17,9 @@ import java.util.List;
 @Service
 public class ChatService {
 
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private MessageDao messageDao;
 
     @Nullable
@@ -28,6 +32,17 @@ public class ChatService {
     @NotNull
     @Transactional
     public List<User> getOnlineUsers(){
-        return new ArrayList<>(userDao.findAll());
+        return new ArrayList<>(userDao.findAllOnline());
+    }
+
+    @Transactional
+    public User getUserByLogin(String login){
+        return userDao.getByLogin(login);
+    }
+
+    @Transactional
+    public ResponseEntity messages(){
+        List<Message> list= messageDao.getAllMessageByDate();
+        return ResponseEntity.ok().body(list);
     }
 }

@@ -9,4 +9,5 @@ public interface UserDao{
     User getByLogin(String login);
     void save(User user);
     List<User> findAll();
+    List<User> findAllOnline();
 }
