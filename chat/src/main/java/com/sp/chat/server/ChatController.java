@@ -37,6 +37,7 @@ public class ChatController {
         Message message = new Message();
         message.setMsg(msg);
         message.setUser(service.getUserByLogin(name));
+        service.sendMessage(msg, service.getUserByLogin(name));
         return ResponseEntity.ok().build();
     }
 

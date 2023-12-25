@@ -53,4 +53,7 @@ public class ChatService {
         user.setStatus(Status.ONLINE);
         userDao.save(user);
     }
+
+    public void sendMessage(String msg, User user) {
+    }
 }
