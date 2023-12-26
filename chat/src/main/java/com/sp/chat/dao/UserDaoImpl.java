@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return user;
     }
 
     @Override
