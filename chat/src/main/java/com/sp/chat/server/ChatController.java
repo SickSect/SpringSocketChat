@@ -34,11 +34,15 @@ public class ChatController {
     @PostMapping("/say")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> say(@RequestParam("name")String name, @RequestParam("msg")String msg){
-        Message message = new Message();
+
+        User user = service.getUserByLogin(name);
+        if (utils.validateSending(user, msg))
+        /*Message message = new Message();
         message.setMsg(msg);
         message.setUser(service.getUserByLogin(name));
         service.sendMessage(msg, service.getUserByLogin(name));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();*/
+        return null;
     }
 
     @GetMapping("/chat")
