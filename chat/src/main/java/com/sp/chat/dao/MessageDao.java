@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MessageDao {
     List<Message> getAllMessageByDate();
+    void save(Message message);
 }

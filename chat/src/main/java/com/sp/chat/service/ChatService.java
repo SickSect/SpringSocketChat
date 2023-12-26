@@ -55,5 +55,9 @@ public class ChatService {
     }
 
     public void sendMessage(String msg, User user) {
+        Message message = new Message();
+        message.setMsg(msg);
+        message.setUser(user);
+        messageDao.save(message);
     }
 }

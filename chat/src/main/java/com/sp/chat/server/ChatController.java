@@ -38,9 +38,6 @@ public class ChatController {
         ResponseEntity<String> resp = utils.validateSending(user, msg);
         if (resp.getStatusCode() == HttpStatus.BAD_REQUEST)
             return resp;
-        Message message = new Message();
-        message.setMsg(msg);
-        message.setUser(service.getUserByLogin(name));
         service.sendMessage(msg, service.getUserByLogin(name));
         return resp;
     }
