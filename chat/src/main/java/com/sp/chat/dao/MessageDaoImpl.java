@@ -3,15 +3,15 @@ package com.sp.chat.dao;
 import com.sp.chat.model.Message;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.context.annotation.Lazy;
+import jakarta.persistence.PersistenceContextType;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class MessageDaoImpl implements MessageDao{
-    @PersistenceContext
-    @Lazy
+    @PersistenceContext(type = PersistenceContextType.TRANSACTION)
     private EntityManager em;
     @Override
     public List<Message> getAllMessageByDate() {
@@ -19,6 +19,7 @@ public class MessageDaoImpl implements MessageDao{
     }
 
     @Override
+    @Transactional
     public void save(Message message) {
         em.persist(message);
     }
