@@ -64,4 +64,8 @@ public class ChatService {
     public List<User> getAllUsers() {
         return new ArrayList<>(userDao.findAll());
     }
+
+    public void logout(String name) {
+
+    }
 }

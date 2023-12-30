@@ -1,6 +1,7 @@
 package com.sp.chat.server;
 
 import com.sp.chat.model.Message;
+import com.sp.chat.model.Status;
 import com.sp.chat.model.User;
 import com.sp.chat.service.ChatService;
 import com.sp.chat.utils.ChatUtils;
@@ -60,5 +61,20 @@ public class ChatController {
         String response = users.stream().map(User :: getLogin)
                 .collect(Collectors.joining("\n"));
         return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> logout(@RequestParam("name") String name){
+        ResponseEntity<String> response = utils.validateName(name, service.getOnlineUsers());
+        if (response != null)
+            return response;
+        
+        User user = service.getUserByLogin(name);
+        if (utils.ifStatusEqual(Status.OFFLINE, user) == true)
+            return ResponseEntity.badRequest().body(name + " is already offline");
+        this.say(name, " leave chat");
+        service.logout(name);
+        return ResponseEntity.ok().body(name + " now is offline");
     }
 }

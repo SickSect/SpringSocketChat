@@ -1,5 +1,6 @@
 package com.sp.chat.utils;
 
+import com.sp.chat.model.Status;
 import com.sp.chat.model.User;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class ChatUtils {
             if (user.getLogin().equals(name))
                 return ResponseEntity.badRequest().body("User already exists");
         }
+
         return null;
     }
 
@@ -25,5 +27,11 @@ public class ChatUtils {
         if (user == null)
             return ResponseEntity.badRequest().body("User does not exist.");
         return ResponseEntity.ok().body("Message sending success.");
+    }
+
+    public boolean ifStatusEqual(Status status, User user){
+        if (status != user.getStatus())
+            return false;
+        return true;
     }
 }
