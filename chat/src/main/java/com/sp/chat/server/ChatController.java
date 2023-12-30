@@ -44,7 +44,7 @@ public class ChatController {
 
     @GetMapping("/chat")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Message>> chat(){
+    public ResponseEntity<String> chat(){
         return service.messages();
     }
 }
