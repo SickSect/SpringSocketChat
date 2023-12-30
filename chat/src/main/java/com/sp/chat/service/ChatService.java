@@ -42,9 +42,8 @@ public class ChatService {
     }
 
     @Transactional
-    public ResponseEntity messages(){
-        List<Message> list = messageDao.getAllMessageByDate();
-        return ResponseEntity.ok().body(list);
+    public List<Message> messages(){
+        return messageDao.getAllMessageByDate();
     }
 
     public void createAndSaveUser(String name) {
@@ -60,5 +59,9 @@ public class ChatService {
         message.setUser(user);
         user.getMessageList().add(message);
         messageDao.save(message);
+    }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(userDao.findAll());
     }
 }

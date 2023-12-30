@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/chat")
@@ -44,7 +45,20 @@ public class ChatController {
 
     @GetMapping("/chat")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> chat(){
-        return service.messages();
+    public ResponseEntity chat(){
+        List<Message> messages = service.messages();
+        String response = messages.stream()
+                .map(Message::getInfo)
+                .collect(Collectors.joining("\n"));
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/users")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity users(){
+        List<User> users = service.getAllUsers();
+        String response = users.stream().map(User :: getLogin)
+                .collect(Collectors.joining("\n"));
+        return ResponseEntity.ok().body(response);
     }
 }

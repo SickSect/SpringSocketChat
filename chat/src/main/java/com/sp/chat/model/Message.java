@@ -49,4 +49,8 @@ public class Message {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public String getInfo(){
+        return this.getDate() + " " + this.getUser().getLogin() + " " + this.getMsg();
+    }
 }

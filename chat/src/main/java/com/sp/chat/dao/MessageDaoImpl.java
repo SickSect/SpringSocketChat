@@ -1,6 +1,7 @@
 package com.sp.chat.dao;
 
 import com.sp.chat.model.Message;
+import com.sp.chat.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceContextType;
@@ -15,10 +16,11 @@ public class MessageDaoImpl implements MessageDao{
     private EntityManager em;
     @Override
     public List<Message> getAllMessageByDate() {
-        return em.createQuery("""
-select u.login, m.date,  m.msg
-from message m
-join user u on u.id = m.user_id""").getResultList();
+        return em.createQuery("Select t from " + Message.class.getSimpleName() + " t").getResultList();
+    }
+
+    public List<User> getAllUsers(){
+        return em.createQuery("Select t from " + User.class.getSimpleName() + " t").getResultList();
     }
 
     @Override
