@@ -1,20 +1,27 @@
 package com.socket.test.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class Message {
     private String content;
     private String sender;
     private MessageType type;
 
-    public Message(String content) {
+/*    public Message() {
+    }
+
+    public Message(String content, String sender, MessageType type) {
         this.content = content;
-
-    }
-
-    public Message() {
-    }
+        this.sender = sender;
+        this.type = type;
+    }*/
 
     public String getContent() {
         return content;
