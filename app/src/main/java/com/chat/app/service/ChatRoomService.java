@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ChatRoomService {
 
     private final ChatRoomRepo chatRoomRepository;
+
+    public ChatRoomService(ChatRoomRepo chatRoomRepository) {
+        this.chatRoomRepository = chatRoomRepository;
+    }
+
     public Optional<String> getChatRoomId(String senderId, String recipientId, boolean createRoomIfNotExists){
-        return chatRoomRepository.findBySenderAndRecipient(senderId, recipientId)
+        return chatRoomRepository.findBySenderIdAndRecipientId(senderId, recipientId)
                 .map(ChatRoom::getChatId)
                 .or(
                 () -> {

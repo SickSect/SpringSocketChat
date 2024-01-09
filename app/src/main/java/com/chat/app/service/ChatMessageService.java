@@ -7,13 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ChatMessageService {
     private final ChatMessageRepo chatMessageRepo;
     private final ChatRoomService chatRoomService;
+
+    public ChatMessageService(ChatMessageRepo chatMessageRepo, ChatRoomService chatRoomService) {
+        this.chatMessageRepo = chatMessageRepo;
+        this.chatRoomService = chatRoomService;
+    }
 
     public ChatMessage save(ChatMessage input){
         var chatId = chatRoomService.getChatRoomId(input.getSenderId(), input.getRecipientId(), true)
