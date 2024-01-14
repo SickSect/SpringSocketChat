@@ -6,9 +6,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Entity
-@Table(name="messages")
+@Table(name="chat_messages")
 @Data
-public class Message {
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -16,5 +16,5 @@ public class Message {
     private String senderId;
     private String recipientID;
     private String chatId;
-    private Date tinestamp;
+    private Date timestamp;
 }
