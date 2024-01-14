@@ -20,7 +20,7 @@ public class UserService {
     }
 
     public void disconnect(User user){
-        User currentUser = userRepo.findById(user.getUsername()).orElse(null);
+        User currentUser = userRepo.findById(user.getNickName()).orElse(null);
         if (currentUser != null){
             currentUser.setStatus(UserStatus.OFFLINE);
             userRepo.save(currentUser);

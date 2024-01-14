@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface ChatMessageRepo extends MongoRepository<ChatMessage, String> {
     List<ChatMessage> findAllByChatId(String chatId);
 }

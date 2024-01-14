@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 public class ChatNotification {
-    @Id
     private String id;
     private String senderId;
     private String recipientId;

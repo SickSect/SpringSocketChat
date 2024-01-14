@@ -6,17 +6,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class User {
     @Id
-    private String username;
+    private String nickName;
     private String fullName;
     private UserStatus status;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getFullName() {
         return fullName;
@@ -32,5 +25,13 @@ public class User {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickName = nickname;
     }
 }

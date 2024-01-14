@@ -42,8 +42,8 @@ public class ChatRoomService {
                 .senderId(recipientId)
                 .recipientId(senderId)
                 .build();
-        chatRoomRepository.save(recipientSender);
         chatRoomRepository.save(senderRecipient);
+        chatRoomRepository.save(recipientSender);
         return chatId;
     }
 }
