@@ -1,25 +1,17 @@
 package com.mailer.demo.controller;
 
-
-import com.mailer.demo.model.ChatMessage;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
+import com.mailer.demo.dto.Message;
+import com.mailer.demo.dto.ResponseMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.util.HtmlUtils;
 
 @Controller
-@Slf4j
 public class MessageController {
-
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-    @MessageMapping("/chat/{to}")
-    public void sendMessage(@DestinationVariable String to, ChatMessage msg){
-        log.info("SEND MESSAGE TO " + to + " MESSAGE IS: " + msg.getContent());
-        // check if user exists
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + to, msg);
+    @MessageMapping("/message")
+    @SendTo("/topic/message")
+    public ResponseMessage getMessage(final Message message){
+        return new ResponseMessage(HtmlUtils.htmlEscape(message.getContent()), "201");
     }
 }
