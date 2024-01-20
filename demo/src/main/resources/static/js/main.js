@@ -25,11 +25,11 @@ function connect() {
     })
 }
 
-function sendMessage() {
+function sendMessage(message) {
     console.log("start sending message...")
-    stompClient.send("/main/message", {}, JSON.stringify({'messageContent': message.val()}));
+    stompClient.send("/main/message", {}, JSON.stringify({'content': $("#message").val()}));
 }
 
 function showMessage(message){
-    $("#messages").append("<tr><td>" + message + "</td></td>");
+    $("#messages").append("<tr><td>" + message + "</tr></td>");
 }

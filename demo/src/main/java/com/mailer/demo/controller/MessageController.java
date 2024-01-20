@@ -9,8 +9,8 @@ import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class MessageController {
-    @MessageMapping("/message")
-    @SendTo("/topic/message")
+    @MessageMapping("/messages")
+    @SendTo("/topic/messages")
     public ResponseMessage getMessage(final Message message){
         return new ResponseMessage(HtmlUtils.htmlEscape(message.getContent()), "201");
     }
