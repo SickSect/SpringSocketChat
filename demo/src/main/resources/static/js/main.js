@@ -1,14 +1,12 @@
 var stompClient = null;
-var message = document.querySelector('#message');
 var sendButton = document.querySelector('#send');
-
+var loginPage = document.querySelector('#usernameForm');
 
 $(document).ready(function () {
     console.log("Main page was loaded.");
     connect();
 
-
-    $("#send").click(function() {
+    sendButton.click(function() {
         sendMessage();
     });
 
@@ -25,11 +23,19 @@ function connect() {
     })
 }
 
+function openChat() {
+   //chatArea.remove('hidden');
+   //messageInput.remove('hidden');
+   loginPage.add('hidden')
+}
+
 function sendMessage(message) {
-    console.log("start sending message...")
+    console.log("start sending message...");
     stompClient.send("/main/message", {}, JSON.stringify({'content': $("#message").val()}));
 }
 
-function showMessage(message){
-    $("#messages").append("<tr><td>" + message + "</tr></td>");
+function showMessage(message) {
+    $("#messages").append("<tr><td>" + message + "</td></tr>");
 }
+
+loginPage.addEventListener('submit', openChat, true);
