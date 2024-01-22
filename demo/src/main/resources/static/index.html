@@ -24,19 +24,31 @@
         </div>
     </div>
 
-    <div class="row" >
-        <div class="message-input" hidden="hidden">
-            <form class="form-inline">
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <input type="text" id="message" class="form-control" placeholder="Enter your message here...">
+    <div class="chatContainer" id="chatPage" hidden="hidden">
+        <div class="userList">
+            <div class="userList-container">
+                <h2>Users online</h2>
+                <ul id="connectedUsers">
+                    TEST VERSION
+                </ul>
+                <p id="user-nickname"></p>
+                <a class="logout" href="" id="logout">Logout</a>
+            </div>
+        </div>
+
+        <div class="chat-area">
+            <div class="chat-area" id="chat-messages">
+            </div>
+
+            <form id="messageForm" name="messageForm">
+                <div class="message-input">
+                    <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                    <button>Send</button>
                 </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
         </div>
     </div>
-
-    <div class="row">
+    <!--<div class="row">
         <div class="chat-area" hidden="hidden">
             <table id="message-history" hidden="hidden" class="table table-striped">
                 <thead>
@@ -57,7 +69,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div>-->
 </div>
 </body>
 </html>

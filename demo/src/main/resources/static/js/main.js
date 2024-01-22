@@ -1,6 +1,7 @@
 var stompClient = null;
 var sendButton = document.querySelector('#send');
 var loginPage = document.querySelector('#usernameForm');
+var chatContainer = document.querySelector('#chatContainer');
 
 $(document).ready(function () {
     console.log("Main page was loaded.");
@@ -24,9 +25,8 @@ function connect() {
 }
 
 function openChat() {
-   //chatArea.remove('hidden');
-   //messageInput.remove('hidden');
-   loginPage.add('hidden')
+    chatContainer.classList.remove('hidden');
+    loginPage.classList.add('hidden')
 }
 
 function sendMessage(message) {
