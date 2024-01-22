@@ -6,41 +6,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/main.js"></script>
 </head>
 <body>
 <div class="container" style="margin-top: 50px">
 
     <div class="row">
         <div class="user-form">
-            <h2>Enter chat</h2>
             <form id="usernameForm">
                 <label for="nickname">Nickname</label>
                 <input type="text" id="nickname" name="nickname" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit" id="login-button">Login</button>
+               <!-- <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>-->
+                <button type="button" class="btn btn-default" id="loginButton">Login</button>
             </form>
         </div>
     </div>
 
-    <div class="chatContainer" id="chatPage" hidden="hidden">
+    <div class="chatContainer">
         <div class="userList">
             <div class="userList-container">
-                <h2>Users online</h2>
-                <ul id="connectedUsers">
-                    TEST VERSION
-                </ul>
-                <p id="user-nickname"></p>
-                <a class="logout" href="" id="logout">Logout</a>
+                <form id="usersOnline" style="display: none">
+                    <h2>Users online</h2>
+                    <ul id="connectedUsers">
+                        TEST VERSION
+                    </ul>
+                    <p id="user-nickname"></p>
+                    <a class="logout" href="" id="logout">Logout</a>
+                </form>
             </div>
         </div>
-
         <div class="chat-area">
-            <div class="chat-area" id="chat-messages">
+            <div class="chatArea">
             </div>
-
-            <form id="messageForm" name="messageForm">
+            <form id="messageForm" name="messageForm" style="display: none">
                 <div class="message-input">
                     <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
                     <button>Send</button>
