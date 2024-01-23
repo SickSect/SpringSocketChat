@@ -30,7 +30,29 @@ function onPublicMessage() {
 }
 
 function onConnected() {
-    stompClient.subscribe('/topic/messages', onPublicMessage)
+    stompClient.subscribe('/topic/messages', onPublicMessage);
+    stompClient.send('/main/user.addUser',
+        {},
+        JSON.stringify(nickname: username, status: 'ONLINE'));
+    document.querySelector('#connected-user-username').textContent = username;
+    findAndDisplayConnectedUsers().then();
+}
+
+async function findAndDisplayConnectedUsers() {
+    const connectedUsersResponse = await fetch('/users');
+    let connectedUsers = await connectedUsersResponse.json();
+    connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
+    const connectedUsersList = document.getElementById('connectedUsers');
+    connectedUsersList.innerHTML = '';
+
+    connectedUsers.forEach(user => {
+        appendUserElement(user, connectedUsersList);
+        if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
+            const separator = document.createElement('li');
+            separator.classList.add('separator');
+            connectedUsersList.appendChild(separator);
+        }
+    });
 }
 
 function onError() {
@@ -38,7 +60,7 @@ function onError() {
 }
 
 loginButton.addEventListener('submit', connect, true);
-
+messageForm.addEventListener('submit', sendMessage, true);
 
 /*
 'use strict'
