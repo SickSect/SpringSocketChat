@@ -16,6 +16,10 @@ $(document).ready(function (){
     $("#loginButton").click(function (){
         openUI();
     })
+
+    $("#sendButton").click(function (){
+        sendMessage();
+    })
 })
 
 function connect() {
