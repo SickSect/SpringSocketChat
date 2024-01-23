@@ -14,7 +14,7 @@ public class MessageController {
     @MessageMapping("/message")
     @SendTo("/topic/messages")
     public ResponseMessage getMessage(final Message message){
-        log.info("Received message:\n content:" + message.getContent() + "\n Sender: " + message.getSender());
+        log.info("Received message:\n content:" + message.getContent() + "\n sender nickname: " + message.getSender());
         return new ResponseMessage(HtmlUtils.htmlEscape(message.getContent()), "201");
     }
 }
