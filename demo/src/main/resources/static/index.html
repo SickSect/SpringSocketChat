@@ -2,75 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello WS</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="/js/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Chat Application</title>
 </head>
 <body>
-<div class="container" style="margin-top: 50px">
 
-    <div class="row">
-        <div class="user-form">
-            <form id="usernameForm">
-                <label for="nickname">Nickname</label>
-                <input type="text" id="nickname" name="nickname" required>
-               <!-- <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>-->
-                <button type="submit" class="btn btn-default" id="loginButton">Login</button>
-            </form>
+<h2>One to One Chat</h2>
+
+<div class="user-form" id="username-page">
+    <h2>Enter Chatroom</h2>
+    <form id="usernameForm">
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" required>
+
+        <label for="fullname">Real Name:</label>
+        <input type="text" id="fullname" name="realname" required>
+
+        <button type="submit">Enter Chatroom</button>
+    </form>
+</div>
+
+<div class="chat-container hidden" id="chat-page">
+    <div class="users-list">
+        <div class="users-list-container">
+            <h2>Online Users</h2>
+            <ul id="connectedUsers">
+            </ul>
+        </div>
+        <div>
+            <p id="connected-user-fullname"></p>
+            <a class="logout" href="javascript:void(0)" id="logout">Logout</a>
         </div>
     </div>
 
-    <div class="chatContainer">
-        <div class="userList">
-            <div class="userList-container">
-                <form id="usersOnline" style="display: none">
-                    <h2>Users online</h2>
-                    <ul id="connectedUsers">
-                        TEST VERSION
-                    </ul>
-                    <div>
-                        <p id="connected-user-username"></p>
-                        <a class="logout" href="javascript:void(0)" id="logout">Logout</a>
-                    </div>
-                </form>
+    <div class="chat-area">
+        <div class="chat-area" id="chat-messages">
+        </div>
+
+        <form id="messageForm" name="messageForm" class="hidden">
+            <div class="message-input">
+                <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
+                <button>Send</button>
             </div>
-        </div>
-        <div class="chat-area">
-            <div class="chatArea">
-            </div>
-            <form id="messageForm" name="messageForm" style="display: none">
-                <div class="message-input">
-                    <input autocomplete="off" type="text" id="message" placeholder="Type your message...">
-                    <button type="button" class="btn btn-default" id="sendButton">Send</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="chat-area" hidden="hidden">
-            <table id="message-history" hidden="hidden" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Messages
-                        <span
-                                id="notifications"
-                                style="
-                                    color: black;
-                                    background-color: white;
-                                    padding-left: 15px;
-                                    padding-right: 15px;">
-                            </span>
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="messages">
-                </tbody>
-            </table>
-        </div>
+        </form>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>
