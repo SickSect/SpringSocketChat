@@ -14,7 +14,18 @@ let nickname = null;
 let fullname = null;
 let selectedUserId = null;
 
-function connect(event) {
+function connect(){
+    var socket = new SockJS("/ws")
+    stompClient = Stomp.over(socket);
+    
+}
+
+usernameForm.addEventListener('submit', connect, true); // step 1
+messageForm.addEventListener('submit', sendMessage, true);
+logout.addEventListener('click', onLogout, true);
+window.onbeforeunload = () => onLogout();
+
+/*function connect(event) {
     nickname = document.querySelector('#nickname').value.trim();
     fullname = document.querySelector('#fullname').value.trim();
 
@@ -66,9 +77,9 @@ function appendUserElement(user, connectedUsersList) {
     listItem.classList.add('user-item');
     listItem.id = user.nickName;
 
-    const userImage = document.createElement('img');
-    userImage.src = '../img/user_icon.png';
-    userImage.alt = user.fullName;
+    //const userImage = document.createElement('img');
+   //userImage.src = '../img/user_icon.png';
+    //userImage.alt = user.fullName;
 
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.fullName;
@@ -77,7 +88,7 @@ function appendUserElement(user, connectedUsersList) {
     receivedMsgs.textContent = '0';
     receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-    listItem.appendChild(userImage);
+    //listItem.appendChild(userImage);
     listItem.appendChild(usernameSpan);
     listItem.appendChild(receivedMsgs);
 
@@ -182,9 +193,5 @@ function onLogout() {
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'OFFLINE'})
     );
     window.location.reload();
-}
+}*/
 
-usernameForm.addEventListener('submit', connect, true); // step 1
-messageForm.addEventListener('submit', sendMessage, true);
-logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();
