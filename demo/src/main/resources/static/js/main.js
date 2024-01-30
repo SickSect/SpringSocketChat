@@ -14,6 +14,54 @@ let nickname = null;
 let fullname = null;
 let selectedUserId = null;
 
+function displayMessage(senderId, content) {
+    const messageContainer = document.createElement('div');
+    messageContainer.classList.add('message');
+    if (senderId === nickname) {
+        messageContainer.classList.add('sender');
+    } else {
+        messageContainer.classList.add('receiver');
+    }
+    const message = document.createElement('p');
+    message.textContent = content;
+    messageContainer.appendChild(message);
+    chatArea.appendChild(messageContainer);
+}
+
+async function onMessageReceived() {
+    console.log('Received message.')
+}
+
+function connect(event){
+    var socket = new SockJS("/chat-app");
+    stompClient = Stomp.over(socket);
+    nickname = document.querySelector('#nickname').value.trim();
+    fullname = document.querySelector('#fullname').value.trim();
+    usernamePage.classList.add('hidden');
+    chatPage.classList.remove('hidden');
+    stompClient.connect({}, function (frame){
+        console.log('Connected: ' + frame);
+
+        stompClient.subscribe('/topic/message', function (message){
+           displayMessage(message.sender, message.content);
+        });
+
+        stompClient.subscribe(`/topic/${nickname}/public`, onMessageReceived);
+
+        stompClient.send("/main/user.addUser",
+            {},
+            JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
+        );
+    });
+    event.preventDefault();
+}
+
+usernameForm.addEventListener('submit', connect, true); // step 1
+/*messageForm.addEventListener('submit', sendMessage, true);
+logout.addEventListener('click', onLogout, true);
+window.onbeforeunload = () => onLogout();*/
+
+/*
 function connect(event) {
     nickname = document.querySelector('#nickname').value.trim();
     fullname = document.querySelector('#fullname').value.trim();
@@ -32,9 +80,9 @@ function connect(event) {
 
 
 function onConnected() {
-/*
+/!*
     stompClient.subscribe(`/user/${nickname}/queue/messages`, onMessageReceived);
-*/
+*!/
     stompClient.subscribe(`/topic/public`, onMessageReceived);
 
     // register the connected user
@@ -68,11 +116,11 @@ function appendUserElement(user, connectedUsersList) {
     listItem.classList.add('user-item');
     listItem.id = user.nickName;
 
-/*
+/!*
     const userImage = document.createElement('img');
     userImage.src = '../img/user_icon.png';
     userImage.alt = user.fullName;
-*/
+*!/
 
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.fullName;
@@ -81,7 +129,7 @@ function appendUserElement(user, connectedUsersList) {
     receivedMsgs.textContent = '0';
     receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-    /*listItem.appendChild(userImage);*/
+    /!*listItem.appendChild(userImage);*!/
     listItem.appendChild(usernameSpan);
     listItem.appendChild(receivedMsgs);
 
@@ -187,8 +235,5 @@ function onLogout() {
     );
     window.location.reload();
 }
+*/
 
-usernameForm.addEventListener('submit', connect, true); // step 1
-messageForm.addEventListener('submit', sendMessage, true);
-logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();
