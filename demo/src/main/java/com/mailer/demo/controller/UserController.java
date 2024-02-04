@@ -22,13 +22,20 @@ public class UserController {
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
     public ChatUser addUser(@Payload ChatUser user){
-        System.out.println("Add user: " + user.toString());
-        userService.saveUser(user);
-        return user;
+        if (userService.ifExists(user) == true){
+            System.out.println("Add user: " + user.toString());
+            userService.saveUser(user);
+            return user;
+        }
+        else {
+            System.out.println("User already exists.");
+            return null;
+        }
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<ChatUser>> findAllOnlineUsers(){
+        System.out.println("Find ONLINE users:\n" + userService.findAllOnline());
         return ResponseEntity.ok(userService.findAllOnline());
     }
 }

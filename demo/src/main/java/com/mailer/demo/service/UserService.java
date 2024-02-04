@@ -21,4 +21,13 @@ public class UserService {
     public void saveUser(ChatUser user){
         userRepo.save(user);
     }
+
+    @Transactional
+    public boolean ifExists(ChatUser user){
+        if (userRepo.findByFullName(user.getFullName()) != null)
+            return false;
+        if (userRepo.findByNickName(user.getNickName()) != null)
+            return false;
+        return true;
+    }
 }

@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface UserRepo extends JpaRepository<ChatUser,String> {
     List<ChatUser> findAllByStatus(UserStatus status);
+    ChatUser findByFullName(String name);
+    ChatUser findByNickName(String nickname);
 }
