@@ -26,7 +26,7 @@ public class UserService {
     public boolean ifExists(ChatUser user){
         if (userRepo.findByFullName(user.getFullName()) != null)
             return false;
-        if (userRepo.findByNickName(user.getNickName()) != null)
+        else if (userRepo.findByNickName(user.getNickName()) != null)
             return false;
         return true;
     }

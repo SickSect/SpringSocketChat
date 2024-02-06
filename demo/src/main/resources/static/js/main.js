@@ -97,15 +97,60 @@ function appendUserElement(user, connectedUsersList) {
     listItem.appendChild(usernameSpan);
     listItem.appendChild(receivedMsgs);
 
-    //listItem.addEventListener('click', userItemClick);
+    listItem.addEventListener('click', userItemClick);
 
     connectedUsersList.appendChild(listItem);
 }
 
+function userItemClick(event) {
+    document.querySelectorAll('.user-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    messageForm.classList.remove('hidden');
+
+    const clickedUser = event.currentTarget;
+    clickedUser.classList.add('active');
+
+    selectedUserId = clickedUser.getAttribute('id');
+    fetchAndDisplayUserChat().then();
+
+    const nbrMsg = clickedUser.querySelector('.nbr-msg');
+    nbrMsg.classList.add('hidden');
+    nbrMsg.textContent = '0';
+
+}
+
+function sendMessage(event) {
+    const messageContent = messageInput.value.trim();
+    if (messageContent && stompClient) {
+        const chatMessage = {
+            senderId: nickname,
+            recipientId: selectedUserId,
+            content: messageInput.value.trim(),
+            timestamp: new Date()
+        };
+        stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+        displayMessage(nickname, messageInput.value.trim());
+        messageInput.value = '';
+    }
+    chatArea.scrollTop = chatArea.scrollHeight;
+    event.preventDefault();
+}
+
+async function fetchAndDisplayUserChat() {
+    const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
+    const userChat = await userChatResponse.json();
+    chatArea.innerHTML = '';
+    userChat.forEach(chat => {
+        displayMessage(chat.senderId, chat.content);
+    });
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
 usernameForm.addEventListener('submit', connect, true); // step 1
-/*messageForm.addEventListener('submit', sendMessage, true);
+messageForm.addEventListener('submit', sendMessage, true);
 logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();*/
+window.onbeforeunload = () => onLogout();
 
 /*
 function connect(event) {

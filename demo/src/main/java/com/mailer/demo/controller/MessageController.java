@@ -18,4 +18,9 @@ public class MessageController {
         log.info("Received message:\n content:" + message.getContent() + "\n sender nickname: " + message.getSender());
         return new ResponseMessage(HtmlUtils.htmlEscape(message.getContent()), "201");
     }
+
+    @MessageMapping("/chat")
+    public void processMessage(@Payload Message msg){
+        Message saved;
+    }
 }
