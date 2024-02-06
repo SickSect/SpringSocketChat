@@ -32,6 +32,10 @@ async function onMessageReceived() {
     console.log('Received message.')
 }
 
+function OnError() {
+
+}
+
 function connect(event){
     var socket = new SockJS("/chat-app");
     stompClient = Stomp.over(socket);
@@ -39,7 +43,7 @@ function connect(event){
     fullname = document.querySelector('#fullname').value.trim();
     usernamePage.classList.add('hidden');
     chatPage.classList.remove('hidden');
-    stompClient.connect({}, function (frame){
+    /*stompClient.connect({}, function (frame){
         console.log('Connected: ' + frame);
 
         stompClient.subscribe('/topic/message', function (message){
@@ -55,8 +59,27 @@ function connect(event){
         document.querySelector('#connected-user-fullname').textContent = fullname;
         console.log('looking for online users...')
         findAndDisplayConnectedUsers().then();
-    });
+    });*/
+    stompClient.connect({}, onConnected, OnError)
     event.preventDefault();
+}
+
+function onConnected(){
+    console.log('Connected: ');
+
+    stompClient.subscribe('/topic/message', function (message){
+        displayMessage(message.sender, message.content);
+    });
+
+    stompClient.subscribe(`/topic/${nickname}/public`, onMessageReceived);
+
+    stompClient.send("/main/user.addUser",
+        {},
+        JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
+    );
+    document.querySelector('#connected-user-fullname').textContent = fullname;
+    console.log('looking for online users...')
+    findAndDisplayConnectedUsers().then();
 }
 
 async function findAndDisplayConnectedUsers() {
@@ -149,8 +172,8 @@ async function fetchAndDisplayUserChat() {
 
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
-logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();
+//logout.addEventListener('click', onLogout, true);
+//window.onbeforeunload = () => onLogout();
 
 /*
 function connect(event) {
