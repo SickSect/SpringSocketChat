@@ -89,7 +89,7 @@ async function findAndDisplayConnectedUsers() {
     connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
     const connectedUsersList = document.getElementById('connectedUsers');
     connectedUsersList.innerHTML = '';
-
+    console.log("refresh list...")
     connectedUsers.forEach(user => {
         appendUserElement(user, connectedUsersList);
         if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
@@ -170,10 +170,27 @@ async function fetchAndDisplayUserChat() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
+function userItemClick(event) {
+    document.querySelectorAll('.user-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    messageForm.classList.remove('hidden');
+
+    const clickedUser = event.currentTarget;
+    clickedUser.classList.add('active');
+
+    selectedUserId = clickedUser.getAttribute('id');
+    fetchAndDisplayUserChat().then();
+
+    const nbrMsg = clickedUser.querySelector('.nbr-msg');
+    nbrMsg.classList.add('hidden');
+    nbrMsg.textContent = '0';
+
+}
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
 //logout.addEventListener('click', onLogout, true);
-//window.onbeforeunload = () => onLogout();
+window.onbeforeunload = () => onLogout();
 
 /*
 function connect(event) {

@@ -1,16 +1,21 @@
 package com.mailer.demo.service;
 
 import com.mailer.demo.dto.Chat;
+import com.mailer.demo.dto.Message;
 import com.mailer.demo.repo.ChatRepo;
+import com.mailer.demo.repo.MessageRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ChatService {
     private final ChatRepo chatRepo;
+    private final MessageRepo messageRepo;
 
     public Optional<String> getChatId(String senderId, String recipientId, boolean createFlag){
         return chatRepo.findBySenderIdAndRecipientId(senderId, recipientId)
@@ -45,4 +50,8 @@ public class ChatService {
     }
 
 
+    public List<Message> findChatMessages(String senderId, String recipientId) {
+        var chatId = this.getChatId(senderId, recipientId, false);
+        return chatId.map(messageRepo::findAllByChatId).orElse(new ArrayList<>());
+    }
 }
