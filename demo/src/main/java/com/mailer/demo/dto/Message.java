@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /*
 @Entity
 */
@@ -22,10 +24,10 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String content;
-    private String sender;
+    private String senderId;
     private String recipient;
     private String chatId;
-
+    private Date timestamp;
 
  /*   public void setId(String id) {
         this.id = id;

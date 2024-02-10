@@ -22,7 +22,7 @@ public class UserController {
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
     public ChatUser addUser(@Payload ChatUser user){
-        if (userService.ifExists(user) == true){
+        if (userService.ifExists(user)){
             System.out.println("Add user: " + user.toString());
             userService.saveUser(user);
             return user;

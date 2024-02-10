@@ -20,7 +20,7 @@ public class MessageService {
 
 
     public Message save(Message msg){
-        String chatId = chatService.getChatId(msg.getSender(), msg.getRecipient(), true)
+        String chatId = chatService.getChatId(msg.getSenderId(), msg.getRecipient(), true)
                 .orElseThrow();
         msg.setChatId(chatId);
         messageRepo.save(msg);

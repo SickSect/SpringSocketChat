@@ -26,10 +26,30 @@ function displayMessage(senderId, content) {
     message.textContent = content;
     messageContainer.appendChild(message);
     chatArea.appendChild(messageContainer);
+
 }
 
-async function onMessageReceived() {
-    console.log('Received message.')
+async function onMessageReceived(payload) {
+    await findAndDisplayConnectedUsers();
+    console.log('Message received', payload);
+    const message = JSON.parse(payload.body);
+    if (selectedUserId && selectedUserId === message.senderId) {
+        displayMessage(message.senderId, message.content);
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    if (selectedUserId) {
+        document.querySelector(`#${selectedUserId}`).classList.add('active');
+    } else {
+        messageForm.classList.add('hidden');
+    }
+
+    const notifiedUser = document.querySelector(`#${message.senderId}`);
+    if (notifiedUser && !notifiedUser.classList.contains('active')) {
+        const nbrMsg = notifiedUser.querySelector('.nbr-msg');
+        nbrMsg.classList.remove('hidden');
+        nbrMsg.textContent = '';
+    }
 }
 
 function OnError() {
@@ -43,23 +63,6 @@ function connect(event){
     fullname = document.querySelector('#fullname').value.trim();
     usernamePage.classList.add('hidden');
     chatPage.classList.remove('hidden');
-    /*stompClient.connect({}, function (frame){
-        console.log('Connected: ' + frame);
-
-        stompClient.subscribe('/topic/message', function (message){
-           displayMessage(message.sender, message.content);
-        });
-
-        stompClient.subscribe(`/topic/${nickname}/public`, onMessageReceived);
-
-        stompClient.send("/main/user.addUser",
-            {},
-            JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
-        );
-        document.querySelector('#connected-user-fullname').textContent = fullname;
-        console.log('looking for online users...')
-        findAndDisplayConnectedUsers().then();
-    });*/
     stompClient.connect({}, onConnected, OnError)
     event.preventDefault();
 }
@@ -67,11 +70,9 @@ function connect(event){
 function onConnected(){
     console.log('Connected: ');
 
-    stompClient.subscribe('/topic/message', function (message){
-        displayMessage(message.sender, message.content);
-    });
+    stompClient.subscribe('/topic/public', onMessageReceived);
 
-    stompClient.subscribe(`/topic/${nickname}/public`, onMessageReceived);
+    stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
 
     stompClient.send("/main/user.addUser",
         {},
@@ -125,25 +126,8 @@ function appendUserElement(user, connectedUsersList) {
     connectedUsersList.appendChild(listItem);
 }
 
-function userItemClick(event) {
-    document.querySelectorAll('.user-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    messageForm.classList.remove('hidden');
-
-    const clickedUser = event.currentTarget;
-    clickedUser.classList.add('active');
-
-    selectedUserId = clickedUser.getAttribute('id');
-    fetchAndDisplayUserChat().then();
-
-    const nbrMsg = clickedUser.querySelector('.nbr-msg');
-    nbrMsg.classList.add('hidden');
-    nbrMsg.textContent = '0';
-
-}
-
 function sendMessage(event) {
+    console.log('Start sending.....')
     const messageContent = messageInput.value.trim();
     if (messageContent && stompClient) {
         const chatMessage = {
@@ -152,7 +136,7 @@ function sendMessage(event) {
             content: messageInput.value.trim(),
             timestamp: new Date()
         };
-        stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+        stompClient.send('/main/chat', {}, JSON.stringify(chatMessage));
         displayMessage(nickname, messageInput.value.trim());
         messageInput.value = '';
     }
@@ -190,7 +174,7 @@ function userItemClick(event) {
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
 //logout.addEventListener('click', onLogout, true);
-window.onbeforeunload = () => onLogout();
+//window.onbeforeunload = () => onLogout();
 
 /*
 function connect(event) {
