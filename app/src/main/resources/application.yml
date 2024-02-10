@@ -1,8 +1,0 @@
-spring:
-  data:
-    mongodb:
-      username: sickeer
-      password: 21062007
-      uri: mongodb://localhost:27017/chat_app
-server:
-  port: 8080
