@@ -38,18 +38,18 @@ async function onMessageReceived(payload) {
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
-    if (selectedUserId) {
+    /*if (selectedUserId) {
         document.querySelector(`#${selectedUserId}`).classList.add('active');
     } else {
         messageForm.classList.add('hidden');
-    }
+    }*/
 
-    const notifiedUser = document.querySelector(`#${message.senderId}`);
+   /* const notifiedUser = document.querySelector(`#${message.senderId}`);
     if (notifiedUser && !notifiedUser.classList.contains('active')) {
         const nbrMsg = notifiedUser.querySelector('.nbr-msg');
         nbrMsg.classList.remove('hidden');
         nbrMsg.textContent = '';
-    }
+    }*/
 }
 
 function OnError() {
@@ -70,7 +70,8 @@ function connect(event){
 function onConnected(){
     console.log('Connected: ');
 
-    stompClient.subscribe('/topic/public', onMessageReceived);
+    //stompClient.subscribe('/topic/public', onMessageReceived);
+    stompClient.subscribe('/user/topic/private-messages', onMessageReceived)
 
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
 
@@ -136,7 +137,7 @@ function sendMessage(event) {
             content: messageInput.value.trim(),
             timestamp: new Date()
         };
-        stompClient.send('/main/chat', {}, JSON.stringify(chatMessage));
+        stompClient.send('/main/private-chat', {}, JSON.stringify(chatMessage));
         displayMessage(nickname, messageInput.value.trim());
         messageInput.value = '';
     }
@@ -173,5 +174,12 @@ function userItemClick(event) {
 }
 usernameForm.addEventListener('submit', connect, true); // step 1
 messageForm.addEventListener('submit', sendMessage, true);
-//logout.addEventListener('click', onLogout, true);
+
+function onLogout() {
+    usernamePage.classList.remove('hidden');
+    chatPage.classList.add('hidden');
+    stompClient.disconnect();
+}
+
+logout.addEventListener('click', onLogout, true);
 //window.onbeforeunload = () => onLogout();

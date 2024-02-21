@@ -12,11 +12,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.util.HtmlUtils;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,8 +29,22 @@ public class MessageController {
     private final MessageService messageService;
     private final SimpMessagingTemplate template;
 
-    @MessageMapping("/chat")
+    /*@MessageMapping("/chat")
     public void processMessage(@Payload Message msg){
+        Message saved = messageService.save(msg);
+        template.convertAndSendToUser(msg.getRecipientId(), "/queue/messages",
+                Notification.builder()
+                        .id(msg.getId())
+                        .recipientId(msg.getRecipientId())
+                        .senderId(msg.getSenderId())
+                        .content(msg.getContent())
+                        .build());
+    }*/
+
+    @MessageMapping("/private-chat")
+    @SendToUser("/topic/private-messages")
+    public void processMessage(Message msg, Principal principal) {
+        log.info("Recieved msg from '{}' to '{} ", principal.getName(), msg.getRecipientId());
         Message saved = messageService.save(msg);
         template.convertAndSendToUser(msg.getRecipientId(), "/queue/messages",
                 Notification.builder()
