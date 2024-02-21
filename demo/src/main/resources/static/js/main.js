@@ -172,8 +172,6 @@ function userItemClick(event) {
     nbrMsg.textContent = '0';
 
 }
-usernameForm.addEventListener('submit', connect, true); // step 1
-messageForm.addEventListener('submit', sendMessage, true);
 
 function onLogout() {
     usernamePage.classList.remove('hidden');
@@ -181,5 +179,7 @@ function onLogout() {
     stompClient.disconnect();
 }
 
+usernameForm.addEventListener('submit', connect, true); // step 1
+messageForm.addEventListener('submit', sendMessage, true);
 logout.addEventListener('click', onLogout, true);
-//window.onbeforeunload = () => onLogout();
+window.onbeforeunload = () => onLogout();

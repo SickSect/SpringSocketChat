@@ -4,6 +4,8 @@ import com.mailer.demo.dto.ChatUser;
 import com.mailer.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -17,13 +19,14 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
     public ChatUser addUser(@Payload ChatUser user){
         if (userService.ifExists(user)){
-            System.out.println("Add user: " + user.toString());
+            log.info("Add user: " + user.toString());
             userService.saveUser(user);
             return user;
         }
@@ -35,7 +38,7 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<ChatUser>> findAllOnlineUsers(){
-        System.out.println("Find ONLINE users:\n" + userService.findAllOnline());
+        log.info("Find ONLINE users:\n" + userService.findAllOnline());
         return ResponseEntity.ok(userService.findAllOnline());
     }
 }
