@@ -30,10 +30,10 @@ public class MessageController {
     @MessageMapping("/chat")
     public void processMessage(@Payload Message msg){
         Message saved = messageService.save(msg);
-        template.convertAndSendToUser(msg.getRecipient(), "/queue/messages",
+        template.convertAndSendToUser(msg.getRecipientId(), "/queue/messages",
                 Notification.builder()
                         .id(msg.getId())
-                        .recipientId(msg.getRecipient())
+                        .recipientId(msg.getRecipientId())
                         .senderId(msg.getSenderId())
                         .content(msg.getContent())
                         .build());
