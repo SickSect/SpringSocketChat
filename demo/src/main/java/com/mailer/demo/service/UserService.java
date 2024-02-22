@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class UserService {
     public List<ChatUser> findAllOnline(){
         return userRepo.findAllByStatus(UserStatus.ONLINE);
     }
+
     @Transactional
     public void saveUser(ChatUser user){
         userRepo.save(user);

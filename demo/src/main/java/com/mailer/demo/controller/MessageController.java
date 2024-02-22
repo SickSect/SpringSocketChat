@@ -29,18 +29,6 @@ public class MessageController {
     private final MessageService messageService;
     private final SimpMessagingTemplate template;
 
-    /*@MessageMapping("/chat")
-    public void processMessage(@Payload Message msg){
-        Message saved = messageService.save(msg);
-        template.convertAndSendToUser(msg.getRecipientId(), "/queue/messages",
-                Notification.builder()
-                        .id(msg.getId())
-                        .recipientId(msg.getRecipientId())
-                        .senderId(msg.getSenderId())
-                        .content(msg.getContent())
-                        .build());
-    }*/
-
     @MessageMapping("/private-chat")
     @SendToUser("/topic/private-messages")
     public void processMessage(Message msg, Principal principal) {

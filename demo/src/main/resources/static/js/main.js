@@ -69,12 +69,8 @@ function connect(event){
 
 function onConnected(){
     console.log('Connected: ');
-
-    //stompClient.subscribe('/topic/public', onMessageReceived);
     stompClient.subscribe('/user/topic/private-messages', onMessageReceived)
-
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
-
     stompClient.send("/main/user.addUser",
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
@@ -87,7 +83,6 @@ function onConnected(){
 async function findAndDisplayConnectedUsers() {
     const connectedUsersResponse = await fetch('/users');
     let connectedUsers = await connectedUsersResponse.json();
-    //console.log('User list: ' + connectedUsers[0].nickName);
     connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
     const connectedUsersList = document.getElementById('connectedUsers');
     connectedUsersList.innerHTML = '';
