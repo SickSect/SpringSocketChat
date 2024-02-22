@@ -37,19 +37,6 @@ async function onMessageReceived(payload) {
         displayMessage(message.senderId, message.content);
         chatArea.scrollTop = chatArea.scrollHeight;
     }
-
-    /*if (selectedUserId) {
-        document.querySelector(`#${selectedUserId}`).classList.add('active');
-    } else {
-        messageForm.classList.add('hidden');
-    }*/
-
-   /* const notifiedUser = document.querySelector(`#${message.senderId}`);
-    if (notifiedUser && !notifiedUser.classList.contains('active')) {
-        const nbrMsg = notifiedUser.querySelector('.nbr-msg');
-        nbrMsg.classList.remove('hidden');
-        nbrMsg.textContent = '';
-    }*/
 }
 
 function OnError() {
@@ -69,7 +56,6 @@ function connect(event){
 
 function onConnected(){
     console.log('Connected: ');
-    stompClient.subscribe('/user/topic/private-messages', onMessageReceived)
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
     stompClient.send("/main/user.addUser",
         {},
@@ -102,9 +88,9 @@ function appendUserElement(user, connectedUsersList) {
     listItem.classList.add('user-item');
     listItem.id = user.nickName;
 
-    /*const userImage = document.createElement('img');
+    const userImage = document.createElement('img');
     userImage.src = '../img/user_icon.png';
-    userImage.alt = user.fullName;*/
+    userImage.alt = user.fullName;
 
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.fullName;
@@ -113,7 +99,7 @@ function appendUserElement(user, connectedUsersList) {
     receivedMsgs.textContent = '0';
     receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-    /*listItem.appendChild(userImage);*/
+    listItem.appendChild(userImage);
     listItem.appendChild(usernameSpan);
     listItem.appendChild(receivedMsgs);
 

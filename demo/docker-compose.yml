@@ -1,0 +1,46 @@
+version: '3'
+
+volumes:
+  cache:
+    driver: local
+  db-data:
+    driver: local
+
+services:
+  app:
+    depends_on:
+      - chat_app_db
+    container_name: chat_app
+    build:
+      context: .
+    env_file:
+      -  .env
+    environment:
+      - SPRING_DATASOURCE_URL = jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?currentSchema=${DB_SCHEMA}
+      - SPRING_DATASOURCE_USER = ${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD = ${DB_PASSWORD}
+    ports:
+      - '8080:8080'
+  db:
+    container_name: chat_app_db
+    hostname: chat_app_db
+    image: postgres:15.1-alpine
+    environment:
+      - POSTGRES_USER = ${DB_USER}
+      - POSTGRES_PASSWORD = ${DB_PASSWORD}
+      - POSTGRES_DB = ${DB_NAME}
+      - POSTGRES_SCHEMA = ${DB_SCHEMA}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./src/main/resources/db-init:/docker-entrypoint-inidb.d
+      - db-data:/var/lib/postgresql/data
+  redis:
+    image: redis:7.2-rc-alpine
+    restart: always
+    container_name: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    command: redis-server --save 20 1 --loglevel warning --requirepass U29IYXJkcGFzc3dvcmRNdXN0QmVXb3JraW5nMTMzNDY3M29ybm90

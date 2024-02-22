@@ -32,7 +32,7 @@ public class MessageController {
     @MessageMapping("/private-chat")
     @SendToUser("/topic/private-messages")
     public void processMessage(Message msg, Principal principal) {
-        log.info("Recieved msg from '{}' to '{} ", principal.getName(), msg.getRecipientId());
+        log.info("Recieved msg from '{}' to '{}' ", principal.getName(), msg.getRecipientId());
         Message saved = messageService.save(msg);
         template.convertAndSendToUser(msg.getRecipientId(), "/queue/messages",
                 Notification.builder()
