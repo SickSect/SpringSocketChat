@@ -5,10 +5,10 @@ import com.mailer.demo.dto.UserStatus;
 import com.mailer.demo.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +20,7 @@ public class UserService {
     }
 
     @Transactional
+    @Cacheable(value = "user", key = "# ")
     public void saveUser(ChatUser user){
         userRepo.save(user);
     }
