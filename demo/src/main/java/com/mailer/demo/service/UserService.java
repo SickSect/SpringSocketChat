@@ -20,7 +20,7 @@ public class UserService {
     }
 
     @Transactional
-    @Cacheable(value = "user", key = "# ")
+    @Cacheable(value = "user", key = "#user.id")
     public void saveUser(ChatUser user){
         userRepo.save(user);
     }
