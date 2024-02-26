@@ -15,6 +15,7 @@ import java.util.List;
 public class UserService {
     private final UserRepo userRepo;
 
+    @Transactional
     public List<ChatUser> findAllOnline(){
         return userRepo.findAllByStatus(UserStatus.ONLINE);
     }
