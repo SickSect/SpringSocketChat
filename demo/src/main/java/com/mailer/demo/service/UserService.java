@@ -5,10 +5,10 @@ import com.mailer.demo.dto.UserStatus;
 import com.mailer.demo.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,6 @@ public class UserService {
     }
 
     @Transactional
-    @Cacheable(value = "user", key = "#user.id")
     public void saveUser(ChatUser user){
         userRepo.save(user);
     }
@@ -33,5 +32,28 @@ public class UserService {
         else if (userRepo.findByNickName(user.getNickName()) != null)
             return false;
         return true;
+    }
+
+    @Transactional
+    public boolean ifOnline(String nickname){
+        if (userRepo.findByNickName(nickname).getStatus() == UserStatus.ONLINE)
+            return true;
+        else
+            return false;
+    }
+
+    @Transactional
+    public List<ChatUser> findAll(){
+        return userRepo.findAll();
+    }
+
+    @Transactional
+    public Optional<ChatUser> getById(String id){
+        return userRepo.findById(id);
+    }
+
+    @Transactional
+    public ChatUser getByNickname(String nickname) {
+        return userRepo.findByNickName(nickname);
     }
 }

@@ -85,6 +85,17 @@ body {
     margin: 10px 0;
 }
 
+.user-info{
+    color: #cdebff;
+    flex: 3;
+    display: block;
+    flex-direction: row;
+    padding: 10px;
+    box-sizing: border-box;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
 .chat-area {
     flex: 3;
     display: flex;

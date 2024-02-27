@@ -8,6 +8,7 @@ const messageInput = document.querySelector('#message');
 const connectingElement = document.querySelector('.connecting');
 const chatArea = document.querySelector('#chat-messages');
 const logout = document.querySelector('#logout');
+const userInfo = document.querySelector('#user-info');
 
 let stompClient = null;
 let nickname = null;
@@ -30,13 +31,17 @@ function displayMessage(senderId, content) {
 }
 
 async function onMessageReceived(payload) {
-    await findAndDisplayConnectedUsers();
+    await findAndDisplayUsers();
     console.log('Message received', payload);
     const message = JSON.parse(payload.body);
     if (selectedUserId && selectedUserId === message.senderId) {
         displayMessage(message.senderId, message.content);
         chatArea.scrollTop = chatArea.scrollHeight;
     }
+}
+
+async function onInfoReceived(payload){
+    console.log('INFO RECEIVED', payload);
 }
 
 function OnError() {
@@ -57,16 +62,17 @@ function connect(event){
 function onConnected(){
     console.log('Connected: ');
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
+    stompClient.subscribe(`/topic/${nickname}/queue/online`, onInfoReceived);
     stompClient.send("/main/user.addUser",
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
     );
     document.querySelector('#connected-user-fullname').textContent = fullname;
     console.log('looking for online users...')
-    findAndDisplayConnectedUsers().then();
+    findAndDisplayUsers().then();
 }
 
-async function findAndDisplayConnectedUsers() {
+async function findAndDisplayUsers() {
     const connectedUsersResponse = await fetch('/users');
     let connectedUsers = await connectedUsersResponse.json();
     connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
@@ -83,30 +89,7 @@ async function findAndDisplayConnectedUsers() {
     });
 }
 
-function appendUserElement(user, connectedUsersList) {
-    const listItem = document.createElement('li');
-    listItem.classList.add('user-item');
-    listItem.id = user.nickName;
 
-    const userImage = document.createElement('img');
-    userImage.src = '../img/user_icon.png';
-    userImage.alt = user.fullName;
-
-    const usernameSpan = document.createElement('span');
-    usernameSpan.textContent = user.fullName;
-
-    const receivedMsgs = document.createElement('span');
-    receivedMsgs.textContent = '0';
-    receivedMsgs.classList.add('nbr-msg', 'hidden');
-
-    listItem.appendChild(userImage);
-    listItem.appendChild(usernameSpan);
-    listItem.appendChild(receivedMsgs);
-
-    listItem.addEventListener('click', userItemClick);
-
-    connectedUsersList.appendChild(listItem);
-}
 
 function sendMessage(event) {
     console.log('Start sending.....')
@@ -136,6 +119,10 @@ async function fetchAndDisplayUserChat() {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
+async function fetchAndCheckIfOnline() {
+
+}
+
 function userItemClick(event) {
     document.querySelectorAll('.user-item').forEach(item => {
         item.classList.remove('active');
@@ -146,12 +133,52 @@ function userItemClick(event) {
     clickedUser.classList.add('active');
 
     selectedUserId = clickedUser.getAttribute('id');
+
+    //user info
+    //userInfo.classList.remove('hidden');
+
+    fetchAndCheckIfOnline().then();
     fetchAndDisplayUserChat().then();
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');
     nbrMsg.textContent = '0';
 
+}
+
+/*function userItemInfo(event){
+    const userImage = document.createElement('img');
+    userImage.src = '../img/user_icon.png';
+    userImage.alt = selectedUserId;
+
+    const usernameSpan = document.createElement('span');
+    usernameSpan.textContent = selectedUserId;
+    userInfo.appendChild();
+}*/
+
+function appendUserElement(user, connectedUsersList) {
+    const listItem = document.createElement('li');
+    listItem.classList.add('user-item');
+    listItem.id = user.nickName;
+
+    const userImage = document.createElement('img');
+    userImage.src = '../img/user_icon.png';
+    userImage.alt = user.fullName;
+
+    const usernameSpan = document.createElement('span');
+    usernameSpan.textContent = user.fullName;
+
+    /*const receivedMsgs = document.createElement('span');
+    receivedMsgs.textContent = '0';
+    receivedMsgs.classList.add('nbr-msg', 'hidden');*/
+
+    listItem.appendChild(userImage);
+    listItem.appendChild(usernameSpan);
+    //listItem.appendChild(receivedMsgs);
+
+    listItem.addEventListener('click', userItemClick);
+
+    connectedUsersList.appendChild(listItem);
 }
 
 function onLogout() {

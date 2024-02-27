@@ -1,10 +1,7 @@
 package com.mailer.demo.dto;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class ChatUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
