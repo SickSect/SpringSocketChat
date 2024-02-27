@@ -8,6 +8,7 @@ import com.mailer.demo.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -43,10 +44,18 @@ public class MessageController {
                         .build());
     }
 
-    @GetMapping("/messages/{senderId}/{recipientId}")
+    @MessageMapping("/messages/{senderId}/{recipientId}")
+    @SendToUser("/topic/get-chat")
+    public void getChat(@DestinationVariable("senderId") String senderId, @DestinationVariable("recipientId") String recipientId){
+
+        log.info("Getting chat: " + senderId + " and " + recipientId + "/n MSG IS: " + chatService.findChatMessages(senderId, recipientId));
+        template.convertAndSendToUser(senderId, "/queue/get-chat",
+                chatService.findChatMessages(senderId, recipientId));
+    }
+    /*@GetMapping("/messages/{senderId}/{recipientId}")
     public ResponseEntity<List<Message>> findChatMessages(@PathVariable String senderId,
                                                           @PathVariable String recipientId) {
         return ResponseEntity
                 .ok(chatService.findChatMessages(senderId, recipientId));
-    }
+    }*/
 }

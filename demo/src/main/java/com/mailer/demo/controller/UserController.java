@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @MessageMapping("/user.ifOnline")
+    /*@MessageMapping("/user.ifOnline")
     @SendToUser("/topic/check-online")
     public void checkIfOnline(Message msg, Principal principal){
         log.info("Checking user " + msg.getSenderId() + "if online");
@@ -57,5 +57,5 @@ public class UserController {
                         .fullName(user.getFullName())
                         .status(user.getStatus())
                         .build());
-    }
+    }*/
 }

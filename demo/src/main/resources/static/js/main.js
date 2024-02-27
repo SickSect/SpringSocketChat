@@ -62,7 +62,8 @@ function connect(event){
 function onConnected(){
     console.log('Connected: ');
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
-    stompClient.subscribe(`/topic/${nickname}/queue/online`, onInfoReceived);
+    //stompClient.subscribe(`/topic/${nickname}/queue/online`, onInfoReceived);
+    stompClient.subscribe('/topic/${nickname}/queue/get-chat', fetchAndDisplayUserChat)
     stompClient.send("/main/user.addUser",
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
@@ -109,14 +110,15 @@ function sendMessage(event) {
     event.preventDefault();
 }
 
-async function fetchAndDisplayUserChat() {
-    const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
+async function fetchAndDisplayUserChat(payload) {
+    console.log('RECEIVED PAYLOAD ' + payload);
+    /*const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
         displayMessage(chat.senderId, chat.content);
     });
-    chatArea.scrollTop = chatArea.scrollHeight;
+    chatArea.scrollTop = chatArea.scrollHeight;*/
 }
 
 async function fetchAndCheckIfOnline() {
@@ -137,8 +139,9 @@ function userItemClick(event) {
     //user info
     //userInfo.classList.remove('hidden');
 
-    fetchAndCheckIfOnline().then();
-    fetchAndDisplayUserChat().then();
+    //fetchAndCheckIfOnline().then();
+    //fetchAndDisplayUserChat().then();
+    stompClient.send('/main/messages/', {}, {});
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');
