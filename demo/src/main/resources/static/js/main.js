@@ -112,15 +112,7 @@ function sendMessage(event) {
 
 async function fetchAndDisplayUserChat(payload) {
     console.log('RECEIVED PAYLOAD \n' + payload);
-    /*const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
-    const userChat = await userChatResponse.json();
-    chatArea.innerHTML = '';
-    userChat.forEach(chat => {
-        displayMessage(chat.senderId, chat.content);
-    });
-    chatArea.scrollTop = chatArea.scrollHeight;*/
     const userChat = JSON.parse(payload.body);
-    //console.log('PAYLOAD PARSED \n ' + userChat)
     chatArea.innerHTML = '';
     userChat.forEach(chat => {
         displayMessage(chat.senderId, chat.content);
