@@ -63,7 +63,7 @@ function onConnected(){
     console.log('Connected: ');
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
     //stompClient.subscribe(`/topic/${nickname}/queue/online`, onInfoReceived);
-    stompClient.subscribe('/topic/${nickname}/queue/get-chat', fetchAndDisplayUserChat)
+    stompClient.subscribe(`/topic/${nickname}/queue/get-chat`, fetchAndDisplayUserChat);
     stompClient.send("/main/user.addUser",
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
@@ -111,7 +111,7 @@ function sendMessage(event) {
 }
 
 async function fetchAndDisplayUserChat(payload) {
-    console.log('RECEIVED PAYLOAD ' + payload);
+    console.log('RECEIVED PAYLOAD \n' + payload);
     /*const userChatResponse = await fetch(`/messages/${nickname}/${selectedUserId}`);
     const userChat = await userChatResponse.json();
     chatArea.innerHTML = '';
@@ -119,6 +119,13 @@ async function fetchAndDisplayUserChat(payload) {
         displayMessage(chat.senderId, chat.content);
     });
     chatArea.scrollTop = chatArea.scrollHeight;*/
+    const userChat = JSON.parse(payload.body);
+    //console.log('PAYLOAD PARSED \n ' + userChat)
+    chatArea.innerHTML = '';
+    userChat.forEach(chat => {
+        displayMessage(chat.senderId, chat.content);
+    });
+    chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 async function fetchAndCheckIfOnline() {
@@ -126,6 +133,7 @@ async function fetchAndCheckIfOnline() {
 }
 
 function userItemClick(event) {
+    console.log('START CHAT!')
     document.querySelectorAll('.user-item').forEach(item => {
         item.classList.remove('active');
     });
@@ -141,7 +149,7 @@ function userItemClick(event) {
 
     //fetchAndCheckIfOnline().then();
     //fetchAndDisplayUserChat().then();
-    stompClient.send('/main/messages/', {}, {});
+    stompClient.send(`/main/messages/${nickname}/${selectedUserId}`, {}, {});
 
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');

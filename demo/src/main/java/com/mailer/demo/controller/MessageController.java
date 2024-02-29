@@ -46,8 +46,8 @@ public class MessageController {
 
     @MessageMapping("/messages/{senderId}/{recipientId}")
     @SendToUser("/topic/get-chat")
-    public void getChat(@DestinationVariable("senderId") String senderId, @DestinationVariable("recipientId") String recipientId){
-
+    public void getChat(@DestinationVariable("senderId") String senderId,
+                        @DestinationVariable("recipientId") String recipientId){
         log.info("Getting chat: " + senderId + " and " + recipientId + "/n MSG IS: " + chatService.findChatMessages(senderId, recipientId));
         template.convertAndSendToUser(senderId, "/queue/get-chat",
                 chatService.findChatMessages(senderId, recipientId));
