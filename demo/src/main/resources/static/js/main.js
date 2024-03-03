@@ -30,32 +30,15 @@ function displayMessage(senderId, content) {
 
 }
 function displayInfo(recipientId, status) {
-    const infoContainer = document.createElement('div');
-    infoContainer.classList.add('info');
+    console.log('DISPLAY INFO');
+    /*const infoContainer = document.createElement('div');
+    infoContainer.classList.add('info');*/
     // checks!
-    const userImage = document.createElement('img');
+    /*const userImage = document.createElement('img');
     userImage.src = '../img/user_icon.png';
     userImage.alt = user.fullName;
     const userNameSpan = document.createElement('span');
-    userNameSpan.textContent = recipientId;
-
-    const listItem = document.createElement('li');
-    listItem.classList.add('user-info');
-    listItem.id = user.nickName;
-
-    const usernameSpan = document.createElement('span');
-    usernameSpan.textContent = user.fullName;
-
-    /*const receivedMsgs = document.createElement('span');
-    receivedMsgs.textContent = '0';
-    receivedMsgs.classList.add('nbr-msg', 'hidden');*/
-
-    listItem.appendChild(userImage);
-    listItem.appendChild(usernameSpan);
-    //listItem.appendChild(receivedMsgs);
-
-    listItem.addEventListener('click', userItemClick);
-
+    userNameSpan.textContent = recipientId;*/
 }
 
 async function onMessageReceived(payload) {
@@ -211,7 +194,8 @@ function appendUserElement(user, connectedUsersList) {
     connectedUsersList.appendChild(listItem);
 }
 
-function apendUserInfoElement()
+function appendUserInfoElement(){
+}
 
 function onLogout() {
     usernamePage.classList.remove('hidden');
