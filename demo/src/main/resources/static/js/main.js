@@ -29,6 +29,34 @@ function displayMessage(senderId, content) {
     chatArea.appendChild(messageContainer);
 
 }
+function displayInfo(recipientId, status) {
+    const infoContainer = document.createElement('div');
+    infoContainer.classList.add('info');
+    // checks!
+    const userImage = document.createElement('img');
+    userImage.src = '../img/user_icon.png';
+    userImage.alt = user.fullName;
+    const userNameSpan = document.createElement('span');
+    userNameSpan.textContent = recipientId;
+
+    const listItem = document.createElement('li');
+    listItem.classList.add('user-info');
+    listItem.id = user.nickName;
+
+    const usernameSpan = document.createElement('span');
+    usernameSpan.textContent = user.fullName;
+
+    /*const receivedMsgs = document.createElement('span');
+    receivedMsgs.textContent = '0';
+    receivedMsgs.classList.add('nbr-msg', 'hidden');*/
+
+    listItem.appendChild(userImage);
+    listItem.appendChild(usernameSpan);
+    //listItem.appendChild(receivedMsgs);
+
+    listItem.addEventListener('click', userItemClick);
+
+}
 
 async function onMessageReceived(payload) {
     await findAndDisplayUsers();
@@ -40,12 +68,17 @@ async function onMessageReceived(payload) {
     }
 }
 
+
 async function onInfoReceived(payload){
     console.log('INFO RECEIVED', payload);
+    const info = JSON.parse(payload.body);
+    if (selectedUserId && selectedUserId == info.recipientId){
+        displayInfo(info.recipientId, info.status);
+    }
 }
 
 function OnError() {
-
+    console.log('ERROR occured');
 }
 
 function connect(event){
@@ -64,6 +97,7 @@ function onConnected(){
     stompClient.subscribe(`/topic/${nickname}/queue/messages`, onMessageReceived);
     //stompClient.subscribe(`/topic/${nickname}/queue/online`, onInfoReceived);
     stompClient.subscribe(`/topic/${nickname}/queue/get-chat`, fetchAndDisplayUserChat);
+    stompClient.subscribe(`/topic/${nickname}/queue/get-info`, onInfoReceived);
     stompClient.send("/main/user.addUser",
         {},
         JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
@@ -90,10 +124,7 @@ async function findAndDisplayUsers() {
     });
 }
 
-
-
 function sendMessage(event) {
-    console.log('Start sending.....')
     const messageContent = messageInput.value.trim();
     if (messageContent && stompClient) {
         const chatMessage = {
@@ -120,29 +151,25 @@ async function fetchAndDisplayUserChat(payload) {
     chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-async function fetchAndCheckIfOnline() {
-
-}
-
 function userItemClick(event) {
-    console.log('START CHAT!')
     document.querySelectorAll('.user-item').forEach(item => {
         item.classList.remove('active');
     });
     messageForm.classList.remove('hidden');
-
     const clickedUser = event.currentTarget;
     clickedUser.classList.add('active');
-
     selectedUserId = clickedUser.getAttribute('id');
-
     //user info
-    //userInfo.classList.remove('hidden');
-
-    //fetchAndCheckIfOnline().then();
+    userInfo.classList.remove('hidden');
+    const info =  {
+        senderId: nickname,
+        recipientId: selectedUserId,
+        content: 'get info'
+    }
+    // clean last info
+    stompClient.send("/main/user.info", info);
     //fetchAndDisplayUserChat().then();
     stompClient.send(`/main/messages/${nickname}/${selectedUserId}`, {}, {});
-
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');
     nbrMsg.textContent = '0';
@@ -183,6 +210,8 @@ function appendUserElement(user, connectedUsersList) {
 
     connectedUsersList.appendChild(listItem);
 }
+
+function apendUserInfoElement()
 
 function onLogout() {
     usernamePage.classList.remove('hidden');

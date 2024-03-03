@@ -2,6 +2,7 @@ package com.mailer.demo.controller;
 
 import com.mailer.demo.dto.ChatUser;
 import com.mailer.demo.dto.Message;
+import com.mailer.demo.dto.Notification;
 import com.mailer.demo.dto.UserStatus;
 import com.mailer.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,15 @@ public class UserController {
             System.out.println("User already exists.");
             return null;
         }
+    }
+
+    @MessageMapping("/user.info")
+    @SendToUser("/topic/info")
+    public void getUserInfo(Principal principal, @Payload Message message){
+        ChatUser info = userService.getByNickname(message.getRecipientId());
+        info.setId("00000000-0000-0000-000000000000");
+        info.setFullName(info.getNickName());
+        template.convertAndSendToUser(message.getSenderId(), "/queue/get-info", info);
     }
 
     @GetMapping("/users")

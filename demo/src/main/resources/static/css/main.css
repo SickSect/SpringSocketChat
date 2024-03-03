@@ -195,6 +195,15 @@ body {
     margin-bottom: 20px;
 }
 
+.user-info{
+    background-color: #3498db;
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
 .user-form button {
     padding: 12px;
     border: none;
