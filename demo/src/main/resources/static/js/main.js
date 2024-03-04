@@ -29,6 +29,7 @@ function displayMessage(senderId, content) {
     chatArea.appendChild(messageContainer);
 
 }
+
 function displayInfo(recipientId, status) {
     console.log('DISPLAY INFO');
     /*const infoContainer = document.createElement('div');
@@ -144,15 +145,10 @@ function userItemClick(event) {
     selectedUserId = clickedUser.getAttribute('id');
     //user info
     userInfo.classList.remove('hidden');
-    const info =  {
-        senderId: nickname,
-        recipientId: selectedUserId,
-        content: 'get info'
-    }
     // clean last info
-    stompClient.send("/main/user.info", info);
+    stompClient.send("/main/user.info", JSON.stringify());
     //fetchAndDisplayUserChat().then();
-    stompClient.send(`/main/messages/${nickname}/${selectedUserId}`, {}, {});
+    //stompClient.send(`/main/messages/${nickname}/${selectedUserId}`, {}, {});
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
     nbrMsg.classList.add('hidden');
     nbrMsg.textContent = '0';
@@ -181,16 +177,13 @@ function appendUserElement(user, connectedUsersList) {
     const usernameSpan = document.createElement('span');
     usernameSpan.textContent = user.fullName;
 
-    /*const receivedMsgs = document.createElement('span');
+    const receivedMsgs = document.createElement('span');
     receivedMsgs.textContent = '0';
-    receivedMsgs.classList.add('nbr-msg', 'hidden');*/
-
+    receivedMsgs.classList.add('nbr-msg', 'hidden');
     listItem.appendChild(userImage);
     listItem.appendChild(usernameSpan);
     //listItem.appendChild(receivedMsgs);
-
     listItem.addEventListener('click', userItemClick);
-
     connectedUsersList.appendChild(listItem);
 }
 
