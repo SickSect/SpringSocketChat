@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @MessageMapping("/user.info")
-    @SendToUser("/topic/info")
+    @SendToUser("/topic/get-info")
     public void getUserInfo(Principal principal, @Payload Message message){
         ChatUser info = userService.getByNickname(message.getRecipientId());
         info.setId("00000000-0000-0000-000000000000");

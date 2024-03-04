@@ -146,7 +146,11 @@ function userItemClick(event) {
     //user info
     userInfo.classList.remove('hidden');
     // clean last info
-    stompClient.send("/main/user.info", JSON.stringify());
+    const info = {
+        senderId: nickname,
+        recipientId: selectedUserId
+    };
+    stompClient.send('/main/user.info', JSON.stringify(info));
     //fetchAndDisplayUserChat().then();
     //stompClient.send(`/main/messages/${nickname}/${selectedUserId}`, {}, {});
     const nbrMsg = clickedUser.querySelector('.nbr-msg');
