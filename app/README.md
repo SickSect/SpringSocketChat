@@ -1,0 +1,2 @@
+# WebSocketMessageBrokerConfigurer
+https://www.toptal.com/java/stomp-spring-boot-websocket
