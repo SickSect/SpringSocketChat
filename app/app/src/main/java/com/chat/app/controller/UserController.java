@@ -21,6 +21,6 @@ public class UserController {
     @SendToUser("/user/login")
     public void onUserConnection(Principal principal, ChatUser user){
         //checks - creating - response - login
-
+        logger.debug("PRINCIPAL: '{} \n USER INFO: '{}' '{}' '{}'", principal.getName(), user.getFullname(), user.getNickname(), user.getPassword());
     }
 }
