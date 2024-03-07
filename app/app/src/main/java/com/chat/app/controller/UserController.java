@@ -17,7 +17,7 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
 
-    @MessageMapping("/login")
+    @MessageMapping("/user.login")
     @SendToUser("/user/login")
     public void onUserConnection(Principal principal, ChatUser user){
         //checks - creating - response - login
