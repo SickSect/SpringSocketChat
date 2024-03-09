@@ -16,10 +16,34 @@
         <label for="nickname">Nickname:</label>
         <input type="text" id="nickname" name="nickname" required>
 
-        <label for="fullname">Real Name:</label>
-        <input type="text" id="fullname" name="realname" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
 
-        <button type="submit">Enter Chatroom</button>
+        <div class="reg-button">
+            <a class="reg-button" href="javascript:registration()">Registration</a>
+        </div>
+
+        <div class="log-button">
+            <a class="log-button" href="javascript:login()">Enter Chatroom</a>
+        </div>
+    </form>
+</div>
+
+<div class="user-registration hidden" id="registration">
+    <h2>Registration</h2>
+    <form id="registrationForm">
+        <label for="nickname-reg">Nickname:</label>
+        <input type="text" id="nickname-reg" name="nickname" required>
+
+        <label for="fullname-reg">Real Name:</label>
+        <input type="text" id="fullname-reg" name="realname" required>
+
+        <label for="password-reg">Password:</label>
+        <input type="password" id="password-reg" name="password" required>
+
+        <div class="reg-button">
+            <a class="reg-button" href="javascript:finishRegistration()">Registration</a>
+        </div>
     </form>
 </div>
 
@@ -37,7 +61,9 @@
         </div>
         <div>
             <p id="connected-user-button"></p>
+<!--
             <a class="refresh" href="javascript:findAndDisplayUsers()" id="refresh">Refresh</a>
+-->
         </div>
     </div>
 
@@ -61,6 +87,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="/static/js/main.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

@@ -10,28 +10,56 @@ const chatArea = document.querySelector('#chat-messages');
 const logout = document.querySelector('#logout');
 const userInfo = document.querySelector('#user-info');
 
+const registrationForm = document.querySelector('#registration');
+
 let stompClient = null;
 let nickname = null;
 let fullname = null;
+let password = null;
 let selectedUserId = null;
 
-function connect(event){
+function OnError() {
+
+}
+
+async function registration(){
+    usernamePage.classList.add('hidden');
+    registrationForm.classList.remove('hidden');
+    if (stompClient == null)
+        connect();
+}
+
+async function finishRegistration(){
+    nickname = document.querySelector('#nickname-reg').value.trim();
+    fullname = document.querySelector('#fullname-reg').value.trim();
+    password = document.querySelector('#password-reg').value.trim();
+    if (stompClient == null)
+        connect();
+    stompClient.send(`/chat-public/user.registration`, {}, JSON.stringify({nickname: nickname, fullname: fullname, password: password}));
+}
+
+function login(event){
+    nickname = document.querySelector('#nickname-reg').value.trim();
+    password = document.querySelector('#password-reg').value.trim();
+    event.preventDefault();
+}
+
+function connect(){
+    console.log('CONNECTED')
     var socket = new SockJS("/app");
     stompClient = Stomp.over(socket);
-    nickname = document.querySelector('#nickname').value.trim();
-    fullname = document.querySelector('#fullname').value.trim();
-    usernamePage.classList.add('hidden');
-    chatPage.classList.remove('hidden');
-    stompClient.connect({}, onConnected, OnError)
-    event.preventDefault();
+    document.querySelector('#connected-user-fullname').textContent = fullname;
 }
 
 function onConnected(){
     console.log('Connected: ');
-    const user = {
-    }
     //stompClient.subscribe(`/topic/${nickname}/queue/chat.messages`, chatReceived);
-    stompClient.send(`/chat-app/user.login`, {}, )
+/*    stompClient.send(`/chat-public/user.login`, {}, JSON.stringify({
+        nickname: nickname,
+        fullname: fullname,
+        password: password,
+        status: 'ONLINE'}));*/
+    document.querySelector('#connected-user-fullname').textContent = fullname;
+    console.log('looking for online users...');
 }
 
-usernameForm.addEventListener('submit', connect, true); // step 1

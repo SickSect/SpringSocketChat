@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepo extends JpaRepository<ChatUser, String> {
+    ChatUser findChatUserByNickname(String nickname);
 }
