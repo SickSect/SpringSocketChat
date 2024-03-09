@@ -21,8 +21,7 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final SimpMessagingTemplate template;
-
-
+    git
     @MessageMapping("/user.login")
     @SendToUser("/user/login")
     public void onUserConnection(Principal principal, ChatUser user){

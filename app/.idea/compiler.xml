@@ -9,7 +9,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct/1.5.3.Final/5f5d063858957ef086858bc3d003f702082297f3/mapstruct-1.5.3.Final.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.5.3.Final/dce418bedafd71ff8dd2cef15006c0fee788b073/mapstruct-processor-1.5.3.Final.jar" />
         </processorPath>
-        <module name="app.app.main~1" />
+        <module name="app.app.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />

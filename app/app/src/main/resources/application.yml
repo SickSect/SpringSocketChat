@@ -1,21 +1,27 @@
 spring:
+  #cache:
+    #type: redis
+    #cache-names: redis-cache
+  #data:
+    #redis:
+      #host: ${REDIS_HOST}
+      #port: 6379
+      #password: ${REDIS_PASSWORD}
   config:
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 21062007
-    #username: ${DB_USER}
-    #password: ${DB_PASSWORD}
-    url: jdbc:postgresql://localhost:5432/chat_app?currentSchema=test_Schema
     #url: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?currentSchema=${DB_SCHEMA}
+    url: jdbc:postgresql://localhost:5432/chat_app?currentSchema=test_Schema
     hikari:
-      schema: ${DB_SCHEMA}
-    jpa:
+      schema: test_Schema
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: create-drop
-      show-sql: true
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-      database-platform: postgresql
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: postgresql

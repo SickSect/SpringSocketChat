@@ -1,17 +1,14 @@
 package com.chat.app.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Data
 @ToString
-@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "chat")
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
