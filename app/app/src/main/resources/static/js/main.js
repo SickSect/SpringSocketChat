@@ -65,7 +65,7 @@ function onConnected(){
         status: 'ONLINE'}));*/
     stompClient.subscribe(`/topic/registration`, successRegistration);
     document.querySelector('#connected-user-fullname').textContent = fullname;
-    console.log('looking for online users...');
 }
+
 window.onload = () => connect();
 

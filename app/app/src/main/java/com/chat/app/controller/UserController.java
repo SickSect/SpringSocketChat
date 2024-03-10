@@ -42,9 +42,19 @@ public class UserController {
                     .message("Success registration with nickname " + user.getNickname())
                     .code(201)
                     .reason("Success operation")
+                    .type(NotificationStatus.OK)
+                    .build());
+            userService.saveUser(principal, user);
+        }
+        else {
+            template.convertAndSend("/topic/registration", NotificationResponse.builder()
+                    .message("User can't use nickname " + user.getNickname())
+                    .code(400)
+                    .reason("Failed operation")
                     .type(NotificationStatus.WRONG_INPUT)
                     .build());
         }
+
 
     }
 }

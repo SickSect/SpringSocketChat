@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -17,7 +18,12 @@ public class UserService {
 
     public boolean checkIfRegistered(ChatUser user) {
         Optional<ChatUser> check = userRepo.findChatUserByNickname(user.getNickname());
+
         return check.isPresent();
+    }
+
+    public void saveUser(Principal principal, ChatUser user) {
+        userRepo.save(user);
     }
 
     /*@Transactional
