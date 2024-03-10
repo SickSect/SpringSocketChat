@@ -21,7 +21,6 @@ public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final SimpMessagingTemplate template;
-    git
     @MessageMapping("/user.login")
     @SendToUser("/user/login")
     public void onUserConnection(Principal principal, ChatUser user){
@@ -31,13 +30,21 @@ public class UserController {
                 user.getNickname(), user.getPassword());
     }
 
-    @MessageMapping("/user.registration")
-    @SendToUser("/user/registration")
+    @MessageMapping("/registration")
     public void onRegistration(Principal principal, ChatUser user){
         //checks - creating - response - registration
         logger.info("PRINCIPAL: '{} \n USER INFO: '{}' '{}' '{}'",
                 principal.getName(), user.getFullname(),
                 user.getNickname(), user.getPassword());
-        NotificationResponse response = userService.userCheckLogin(user);
+        if (userService.checkIfRegistered(user) == false){
+            logger.info("User " + principal.getName() + " can use nickname: " + user.getNickname());
+            template.convertAndSend("/topic/registration", NotificationResponse.builder()
+                    .message("Success registration with nickname " + user.getNickname())
+                    .code(201)
+                    .reason("Success operation")
+                    .type(NotificationStatus.WRONG_INPUT)
+                    .build());
+        }
+
     }
 }

@@ -8,12 +8,19 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepo userRepo;
 
-    @Transactional
+    public boolean checkIfRegistered(ChatUser user) {
+        Optional<ChatUser> check = userRepo.findChatUserByNickname(user.getNickname());
+        return check.isPresent();
+    }
+
+    /*@Transactional
     public NotificationResponse userCheckLogin(ChatUser userCheck) {
         ChatUser user = userRepo.findChatUserByNickname(userCheck.getNickname());
         if (user == null){
@@ -43,5 +50,5 @@ public class UserService {
                     .type(NotificationStatus.WRONG_INPUT)
                     .build();
         }
-    }
+    }*/
 }

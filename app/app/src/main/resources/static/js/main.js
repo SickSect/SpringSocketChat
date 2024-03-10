@@ -35,20 +35,24 @@ async function finishRegistration(){
     password = document.querySelector('#password-reg').value.trim();
     if (stompClient == null)
         connect();
-    stompClient.send(`/chat-public/user.registration`, {}, JSON.stringify({nickname: nickname, fullname: fullname, password: password}));
+    stompClient.send(`/chat-public/registration`, {}, JSON.stringify({nickname: nickname, fullname: fullname, password: password}));
 }
 
 function login(event){
     nickname = document.querySelector('#nickname-reg').value.trim();
     password = document.querySelector('#password-reg').value.trim();
-    event.preventDefault();
 }
 
-function connect(){
+function connect(event){
     console.log('CONNECTED')
     var socket = new SockJS("/app");
     stompClient = Stomp.over(socket);
-    document.querySelector('#connected-user-fullname').textContent = fullname;
+    //document.querySelector('#connected-user-fullname').textContent = fullname;
+    stompClient.connect({}, onConnected, {});
+}
+
+async function successRegistration(payload) {
+    //console.log('get register payload:'  + payload);
 }
 
 function onConnected(){
@@ -59,7 +63,9 @@ function onConnected(){
         fullname: fullname,
         password: password,
         status: 'ONLINE'}));*/
+    stompClient.subscribe(`/topic/registration`, successRegistration);
     document.querySelector('#connected-user-fullname').textContent = fullname;
     console.log('looking for online users...');
 }
+window.onload = () => connect();
 
