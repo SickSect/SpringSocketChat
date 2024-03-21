@@ -18,6 +18,7 @@ public class ChatUser implements Serializable {
     private String id;
     private String nickName;
     private String fullName;
+    private String password;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
