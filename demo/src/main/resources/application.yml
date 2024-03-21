@@ -2,11 +2,6 @@ spring:
   cache:
     type: redis
     cache-names: redis-cache
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: 6379
-      password: ${REDIS_PASSWORD}
   config:
     import: optional:file:.env[.properties]
   datasource:
@@ -14,7 +9,6 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     url: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}?currentSchema=${DB_SCHEMA}
-    #url: jdbc:postgresql://localhost:5432/chat_app?currentSchema=test_Schema
     hikari:
       schema: ${DB_SCHEMA}
   jpa:
