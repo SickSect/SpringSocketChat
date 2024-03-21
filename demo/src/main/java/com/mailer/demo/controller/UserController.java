@@ -41,15 +41,6 @@ public class UserController {
         }
     }
 
-    @MessageMapping("/user.info")
-    @SendToUser("/topic/get-info")
-    public void getUserInfo(Principal principal, @Payload Message message){
-        ChatUser info = userService.getByNickname(message.getRecipientId());
-        info.setId("00000000-0000-0000-000000000000");
-        info.setFullName(info.getNickName());
-        template.convertAndSendToUser(message.getSenderId(), "/queue/get-info", info);
-    }
-
     @GetMapping("/users")
     public ResponseEntity<List<ChatUser>> findAllUsers(){
         log.info("Find all users.");

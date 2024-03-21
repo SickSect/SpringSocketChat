@@ -52,10 +52,4 @@ public class MessageController {
         template.convertAndSendToUser(senderId, "/queue/get-chat",
                 chatService.findChatMessages(senderId, recipientId));
     }
-    /*@GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<List<Message>> findChatMessages(@PathVariable String senderId,
-                                                          @PathVariable String recipientId) {
-        return ResponseEntity
-                .ok(chatService.findChatMessages(senderId, recipientId));
-    }*/
 }
